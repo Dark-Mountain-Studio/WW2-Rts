@@ -13,7 +13,6 @@ public class SoliderAI : MonoBehaviour {
 
 	public int ViewAngle = 100;
 
-
 	public Squad Mysquad;
 
 	private Seeker seeker;
@@ -52,17 +51,16 @@ public class SoliderAI : MonoBehaviour {
 
 		if(IsSquadLeader == true) {
 
-			scanview.Scan(ViewAngle,ViewDis);
+			scanview.Scan(ViewAngle,ViewDis, Mysquad);
 		}
 	}
 
 	//start a path whit the passed Vector3 as the end point
 	public void StartPath (Vector3 targetpos){
-		targetPosition = targetpos;
+		targetPosition = RandmizePos(targetpos);
 
 		seeker.StartPath (transform.position,targetPosition, OnPathComplete);
 	
-		scanview.Scan(ViewAngle,ViewDis);
 	}
 
 
@@ -80,7 +78,7 @@ public class SoliderAI : MonoBehaviour {
 
 	//Moves The unit
 	public IEnumerator Move () {
-
+		
 
 	if (IsMoving == false){
 
@@ -103,7 +101,7 @@ public class SoliderAI : MonoBehaviour {
 
 			dir *= Speed * Time.deltaTime;
 
-		controller.SimpleMove (dir);
+				controller.SimpleMove (dir);
 
 		//Check if we are close enough to the next waypoint
 		//If we are, proceed to follow the next waypoint
@@ -140,5 +138,12 @@ public class SoliderAI : MonoBehaviour {
 			}
 		}
 		return WorldManger.Instace.SpawnPointList[RI];
+	}
+
+	Vector3 RandmizePos (Vector3 Pos) {
+
+		Vector3 Rpos = new Vector3(Pos.x + Random.Range(-4,4),Pos.y,Pos.z + Random.Range(-4,4));
+
+		return Rpos;
 	}
 }

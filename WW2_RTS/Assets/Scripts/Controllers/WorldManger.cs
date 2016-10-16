@@ -25,7 +25,7 @@ public class WorldManger : MonoBehaviour {
 	
 		SpawnPointList = new List<GameObject>();
 
-		AddSquad(new Squad(1));
+		AddSquad(new Squad(5,squadlist.Count,"Team_0"));
 	}
 
 	/// <summary>

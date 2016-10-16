@@ -11,6 +11,22 @@ public class Squad {
 
 	public bool InPlay;
 
+	int SquadId;
+
+	string TeamId;
+
+	//The Team the Squad is apart of
+	public string TeamID {
+		get {
+			return TeamId;
+		}
+	}
+	//The ID of the Squad
+	public int SquadID {
+		get {
+			return SquadId;
+		}
+	}
 
 	//The Size of the Squad
 	int Squadsize;
@@ -25,10 +41,11 @@ public class Squad {
 	/// Initializes a new instance of the <see cref="Squad"/> class.
 	/// </summary>
 	/// <param name="Size">Size.</param>
-	public Squad (int Size){
+	public Squad (int Size,int SquadID, string Team){
 
 		InPlay = false;
-
+		TeamId = Team;
+		SquadId = SquadID;
 		Squadsize = Size;
 	
 	}
@@ -84,6 +101,13 @@ public class Squad {
 
 			Units[i].GetComponent<SoliderAI>().StartPath(MovePos);
 
+		}
+	}
+	public void SelectState(bool State) {
+
+		for (int x = 0; x < Units.Count; x++) {
+		
+			Units[x].transform.FindChild("Circle").gameObject.SetActive(State);
 		}
 	}
 }

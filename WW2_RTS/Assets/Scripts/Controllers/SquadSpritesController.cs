@@ -22,12 +22,15 @@ public class SquadSpritesController : MonoBehaviour {
 		print("OnMouseDown");
 
 		Iswaiting = true;
+
+		mysquad.SelectState(true);
 		StartCoroutine(CheckInput());
 
 	}
 
 	void Update() 
 	{
+		//Makes the button always face the cammera
 		transform.LookAt(Camera.main.transform.position, -Vector3.up);
 	}
 
@@ -35,7 +38,8 @@ public class SquadSpritesController : MonoBehaviour {
 	IEnumerator CheckInput(){
 		
 		while (Iswaiting == true){
-			
+
+			//waits until the player has selected the pos to move to
 			if (Input.GetMouseButton(1)) {
 
 				ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -45,7 +49,11 @@ public class SquadSpritesController : MonoBehaviour {
 				print("Mouse Click");
 				mysquad.SquadMove(temp.point);
 
+				//Clean up
 				Iswaiting = false;
+				mysquad.SelectState(false);
+
+
 				yield break;
 			}
 			yield return new WaitForEndOfFrame();
