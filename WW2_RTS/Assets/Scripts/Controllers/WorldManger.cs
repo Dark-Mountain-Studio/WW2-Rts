@@ -8,9 +8,11 @@ public class WorldManger : MonoBehaviour {
 
 	public List<Squad> squadlist;
 
-	public WeaponPreSet WeaponPreset;
-
 	public List<GameObject> SpawnPointList;
+
+	public WeaponList weaponlist;
+
+	SquadLoadout Squadloadout;
 
 	public static WorldManger Instace {get; set;} 
 
@@ -19,13 +21,15 @@ public class WorldManger : MonoBehaviour {
 
 		Instace = this;
 
-		WeaponPreset = new WeaponPreSet();
+		weaponlist = new WeaponList();
+
+		Squadloadout = new SquadLoadout();
 
 		squadlist = new List<Squad>();
 	
 		SpawnPointList = new List<GameObject>();
 
-		AddSquad(new Squad(5,squadlist.Count,"Team_0"));
+		AddSquad(new Squad(2,squadlist.Count,"Team_0", Squadloadout.LoadOut[0]));
 	}
 
 	/// <summary>
@@ -36,7 +40,7 @@ public class WorldManger : MonoBehaviour {
 
 		squadlist.Add(SquadToAdd);
 	}
-	public GameObject SpawnSquadLeader (GameObject Unit,int Index,Squad PassedSquad) {
+	public GameObject SpawnSquadLeader (GameObject Unit,Squad PassedSquad) {
 
 		PassedSquad.Units.Remove(Unit);
 

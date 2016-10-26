@@ -9,10 +9,9 @@ public class SoliderAI : MonoBehaviour {
 	//The point to move to
 	Vector3 targetPosition;
 
-	public float ViewDis = 100;
-
-	public int ViewAngle = 100;
-
+	//This units weapon
+	public Weapon MyWeapon;
+	 
 	public Squad Mysquad;
 
 	private Seeker seeker;
@@ -46,12 +45,16 @@ public class SoliderAI : MonoBehaviour {
 		
 			scanview = this.GetComponentInChildren<ScanView>();
 		}
+		if (MyWeapon = null) {
+
+			Mysquad.GetWeapon(this.gameObject);
+		}
 	}
 	public void Update(){
 
 		if(IsSquadLeader == true) {
 
-			scanview.Scan(ViewAngle,ViewDis, Mysquad);
+			scanview.Scan(Mysquad.ViewAngle,Mysquad.ViewDis, Mysquad);
 		}
 	}
 
@@ -80,15 +83,16 @@ public class SoliderAI : MonoBehaviour {
 	public IEnumerator Move () {
 		
 
-	if (IsMoving == false){
+		if (IsMoving == false){
 
-		IsMoving = true;
+			IsMoving = true;
 	
-	while (true) {
+		while (true) {
 
 			if (Path == null) {
+			
 			//We have no path to move after yet
-				yield break;
+			yield break;
 		}
 			if (CurrentWaypoint >= Path.vectorPath.Count) {
 			Debug.Log ("End Of Path Reached");
@@ -96,6 +100,7 @@ public class SoliderAI : MonoBehaviour {
 
 				yield break;
 		}
+		
 		//Direction to the next waypoint
 		Vector3 dir = (Path.vectorPath[CurrentWaypoint]-transform.position).normalized;
 
@@ -110,6 +115,7 @@ public class SoliderAI : MonoBehaviour {
 			
 				yield return new WaitForEndOfFrame();
 			}
+
 			yield return new WaitForEndOfFrame();
 			}
 		} 

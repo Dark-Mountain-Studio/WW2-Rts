@@ -18,7 +18,7 @@ GameObject:
   - 114: {fileID: 11411492}
   m_Layer: 0
   m_Name: Unit
-  m_TagString: Solider_Team1
+  m_TagString: Team_0
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
