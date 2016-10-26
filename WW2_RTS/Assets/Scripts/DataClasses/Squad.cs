@@ -5,12 +5,41 @@ using System.Collections.Generic;
 
 public class Squad {
 
+	enum SquadType {
+	
+	Inf,
+	Eng
+
+	}
+
 	public List<GameObject> Units;
 
 	public GameObject squadleader;
 
+	List<Weapon> SquadWeapons;
+
 	public bool InPlay;
 
+	int SquadId;
+
+	string TeamId;
+
+	public float ViewDis = 100;
+
+	public int ViewAngle = 100;
+
+	//The Team the Squad is apart of
+	public string TeamID {
+		get {
+			return TeamId;
+		}
+	}
+	//The ID of the Squad
+	public int SquadID {
+		get {
+			return SquadId;
+		}
+	}
 
 	//The Size of the Squad
 	int Squadsize;
@@ -25,11 +54,13 @@ public class Squad {
 	/// Initializes a new instance of the <see cref="Squad"/> class.
 	/// </summary>
 	/// <param name="Size">Size.</param>
-	public Squad (int Size){
+	public Squad (int Size,int SquadID, string Team, List<Weapon> _SquadWeapons){
 
 		InPlay = false;
-
+		TeamId = Team;
+		SquadId = SquadID;
 		Squadsize = Size;
+		SquadWeapons = SquadWeapons;
 	
 	}
 
@@ -53,7 +84,7 @@ public class Squad {
 		unit.gameObject.GetComponent<SoliderAI>().UnitNumber = Units.Count;
 	
 	}
-
+	//Make a new Squad Leader 
 	public void NewSquadLeader () {
 	
 		if (squadleader == null) {
@@ -62,7 +93,7 @@ public class Squad {
 
 				if (Units[i] != null) {
 
-					squadleader = WorldManger.Instace.SpawnSquadLeader(Units[i],i,this);
+					squadleader = WorldManger.Instace.SpawnSquadLeader(Units[i],this);
 
 					squadleader.GetComponent<SoliderAI>().IsSquadLeader = true;
 
@@ -84,6 +115,31 @@ public class Squad {
 
 			Units[i].GetComponent<SoliderAI>().StartPath(MovePos);
 
+		}
+	}
+	/// <summary>
+	/// Selects the state of the Squad.
+	/// </summary>
+	/// <param name="State">If set to <c>true</c> state.</param>
+	public void SelectState(bool State) {
+
+		for (int x = 0; x < Units.Count; x++) {
+		
+			Units[x].transform.FindChild("Circle").gameObject.SetActive(State);
+		}
+	}
+	/// <summary>
+	/// Gives the unit a weapon.
+	/// </summary>
+	/// <param name="Unit">Unit.</param>
+	public void GetWeapon (GameObject Unit) {
+
+		for (int i = 0; i < SquadWeapons.Count; i++) {
+
+			if (SquadWeapons[i].InUse = false) {
+
+				Unit.GetComponent<SoliderAI>().MyWeapon = SquadWeapons[i];
+			}
 		}
 	}
 }

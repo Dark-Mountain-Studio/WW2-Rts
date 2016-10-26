@@ -9,11 +9,9 @@ public class SoliderAI : MonoBehaviour {
 	//The point to move to
 	Vector3 targetPosition;
 
-	public float ViewDis = 100;
-
-	public int ViewAngle = 100;
-
-
+	//This units weapon
+	public Weapon MyWeapon;
+	 
 	public Squad Mysquad;
 
 	private Seeker seeker;
@@ -47,22 +45,25 @@ public class SoliderAI : MonoBehaviour {
 		
 			scanview = this.GetComponentInChildren<ScanView>();
 		}
+		if (MyWeapon = null) {
+
+			Mysquad.GetWeapon(this.gameObject);
+		}
 	}
 	public void Update(){
 
 		if(IsSquadLeader == true) {
 
-			scanview.Scan(ViewAngle,ViewDis);
+			scanview.Scan(Mysquad.ViewAngle,Mysquad.ViewDis, Mysquad);
 		}
 	}
 
 	//start a path whit the passed Vector3 as the end point
 	public void StartPath (Vector3 targetpos){
-		targetPosition = targetpos;
+		targetPosition = RandmizePos(targetpos);
 
 		seeker.StartPath (transform.position,targetPosition, OnPathComplete);
 	
-		scanview.Scan(ViewAngle,ViewDis);
 	}
 
 
@@ -80,17 +81,18 @@ public class SoliderAI : MonoBehaviour {
 
 	//Moves The unit
 	public IEnumerator Move () {
+		
 
+		if (IsMoving == false){
 
-	if (IsMoving == false){
-
-		IsMoving = true;
+			IsMoving = true;
 	
-	while (true) {
+		while (true) {
 
 			if (Path == null) {
+			
 			//We have no path to move after yet
-				yield break;
+			yield break;
 		}
 			if (CurrentWaypoint >= Path.vectorPath.Count) {
 			Debug.Log ("End Of Path Reached");
@@ -98,12 +100,13 @@ public class SoliderAI : MonoBehaviour {
 
 				yield break;
 		}
+		
 		//Direction to the next waypoint
 		Vector3 dir = (Path.vectorPath[CurrentWaypoint]-transform.position).normalized;
 
 			dir *= Speed * Time.deltaTime;
 
-		controller.SimpleMove (dir);
+				controller.SimpleMove (dir);
 
 		//Check if we are close enough to the next waypoint
 		//If we are, proceed to follow the next waypoint
@@ -112,6 +115,7 @@ public class SoliderAI : MonoBehaviour {
 			
 				yield return new WaitForEndOfFrame();
 			}
+
 			yield return new WaitForEndOfFrame();
 			}
 		} 
@@ -140,5 +144,12 @@ public class SoliderAI : MonoBehaviour {
 			}
 		}
 		return WorldManger.Instace.SpawnPointList[RI];
+	}
+
+	Vector3 RandmizePos (Vector3 Pos) {
+
+		Vector3 Rpos = new Vector3(Pos.x + Random.Range(-4,4),Pos.y,Pos.z + Random.Range(-4,4));
+
+		return Rpos;
 	}
 }

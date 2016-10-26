@@ -27,10 +27,12 @@ public class Spawner : MonoBehaviour {
 
 
 		for (int i = 0; i < WorldManger.Instace.squadlist.Count; i++) {
-
+			
 			print("Tested_Squad_" + i); 
 
 			if (WorldManger.Instace.squadlist[i].InPlay == false){
+				if (WorldManger.Instace.squadlist[i].TeamID == "Team_0") {
+					
 				print("Found Not InPlay Squad");
 
 				WorldManger.Instace.squadlist[i].InPlay = true;
@@ -47,6 +49,7 @@ public class Spawner : MonoBehaviour {
 
 						yield return new WaitForSeconds(0.5f);
 
+					}
 				}
 				WorldManger.Instace.squadlist[i].NewSquadLeader();
 
